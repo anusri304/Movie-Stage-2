@@ -9,7 +9,7 @@ Please replace this API key in the below variable in NetworkUtils.java
 
  1) private static String movieDbPopularUrl = "http://api.themoviedb.org/3/movie/popular?api_key=[API_KEY]"
   
- 2)private static String movieDbRatingUrl = "http://api.themoviedb.org/3/movie/top_rated?api_key=[API_KEY]"
+ 2) private static String movieDbRatingUrl = "http://api.themoviedb.org/3/movie/top_rated?api_key=[API_KEY]"
  
  
  
