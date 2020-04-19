@@ -7,9 +7,13 @@ You can also see the API key on the right.
 
 Please replace this API key in the below variable in NetworkUtils.java
 
- 1) private static String movieDbPopularUrl = "http://api.themoviedb.org/3/movie/popular?api_key=[API_KEY]"
+ 1) String movieDbPopularUrl = "http://api.themoviedb.org/3/movie/popular?api_key=[API_KEY]"
   
- 2) private static String movieDbRatingUrl = "http://api.themoviedb.org/3/movie/top_rated?api_key=[API_KEY]"
+ 2) String movieDbRatingUrl = "http://api.themoviedb.org/3/movie/top_rated?api_key=[API_KEY]"
+ 
+ 3) String reviewUrl = "http://api.themoviedb.org/3/movie/"+String.valueOf(movieId)+"/reviews?api_key=[API_KEY]";
+ 
+ 4) String trailerUrl = "http://api.themoviedb.org/3/movie/"+String.valueOf(movieId)+"/videos?api_key=[API_KEY]";
  
  
  
