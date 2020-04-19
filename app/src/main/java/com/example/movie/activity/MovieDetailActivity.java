@@ -10,6 +10,7 @@ import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -27,6 +28,7 @@ import com.example.movie.activity.viewmodel.MovieViewModel;
 import com.example.movie.activity.viewmodel.MovieViewModelFactory;
 import com.example.movie.adapter.ReviewRecyclerViewAdapter;
 import com.example.movie.adapter.TrailerRecyclerViewAdapter;
+import com.example.movie.databinding.ActivityMovieDetailBinding;
 import com.example.movie.domain.Movie;
 import com.example.movie.executors.AppExecutors;
 import com.example.movie.utils.ApplicationConstants;
@@ -43,10 +45,7 @@ import static com.example.movie.utils.ApplicationConstants.*;
 
 public class MovieDetailActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<String> {
-    RecyclerView trailerRecyclerView;
-    RecyclerView reviewRecyclerView;
     MoviePresentationBean movie = null;
-    ToggleButton toggleButton;
     MovieViewModel viewModel;
 
     private static final int TRAILER_SEARCH_LOADER = 22;
@@ -55,13 +54,13 @@ public class MovieDetailActivity extends AppCompatActivity implements
     private static final String TRAILER_SEARCH_QUERY_URL_EXTRA = "trailerquery";
     private static final String REVIEW_SEARCH_QUERY_URL_EXTRA = "reviewquery";
 
-    private ProgressBar mLoadingIndicator;
+    ActivityMovieDetailBinding activityMovieDetailBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie_detail);
 
+        activityMovieDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail);
 
         Intent intent = getIntent();
         if (intent == null) {
@@ -80,13 +79,6 @@ public class MovieDetailActivity extends AppCompatActivity implements
         }
         setTitle(Objects.requireNonNull(movie).getTitle());
 
-        trailerRecyclerView = findViewById(R.id.rv_trailers);
-        reviewRecyclerView = findViewById(R.id.rv_reviews);
-        toggleButton = findViewById(R.id.toggleButton);
-
-        mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
-
-
         getSupportLoaderManager().initLoader(TRAILER_SEARCH_LOADER, null, this);
         getSupportLoaderManager().initLoader(REVIEW_SEARCH_LOADER, null, this);
         initButton(movie);
@@ -95,7 +87,8 @@ public class MovieDetailActivity extends AppCompatActivity implements
     }
 
     private void initButton(MoviePresentationBean movie) {
-;        MovieViewModelFactory factory = new MovieViewModelFactory((Application) getApplicationContext(),movie.getId());
+        ;
+        MovieViewModelFactory factory = new MovieViewModelFactory((Application) getApplicationContext(), movie.getId());
         viewModel
                 = ViewModelProviders.of(this, factory).get(MovieViewModel.class);
 
@@ -103,57 +96,52 @@ public class MovieDetailActivity extends AppCompatActivity implements
         viewModel.getMovie().observe(this, new Observer<Movie>() {
             @Override
             public void onChanged(@Nullable Movie movie) {
-                if(movie!=null) {
-                    toggleButton.setChecked(movie.isFavourite());
+                if (movie != null) {
+                    activityMovieDetailBinding.toggleButton.setChecked(movie.isFavourite());
                 }
             }
         });
-        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        activityMovieDetailBinding.toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
-                    Log.d("Anandhi", "Checked");
-                    insertOrUpdateMovie(movie.getId(),true);
+                    insertOrUpdateMovie(movie.getId(), true);
                 } else {
-                    Log.d("Anandhi", "UnChecked");
-                    insertOrUpdateMovie(movie.getId(),false);
+                    insertOrUpdateMovie(movie.getId(), false);
                 }
             }
         });
     }
 
 
-
-    private void updateMovie(int movieId,boolean isFavorite) {
+    private void updateMovie(int movieId, boolean isFavorite) {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                viewModel.updateMovie(movieId,isFavorite);
+                viewModel.updateMovie(movieId, isFavorite);
             }
         });
 
     }
 
 
-    private void insertOrUpdateMovie(int movieId,boolean isFavorite){
+    private void insertOrUpdateMovie(int movieId, boolean isFavorite) {
 
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                LiveData<Movie>  objMovie = viewModel.getMovie();
-                if(objMovie.getValue() ==null){
+                LiveData<Movie> objMovie = viewModel.getMovie();
+                if (objMovie.getValue() == null) {
                     saveMovie(movie);
-                }
-                else {
-                    updateMovie(movieId,isFavorite);
+                } else {
+                    updateMovie(movieId, isFavorite);
                 }
             }
         });
 
 
-
-
     }
+
     private void saveMovie(MoviePresentationBean moviePresentationBean) {
         try {
 
@@ -182,21 +170,21 @@ public class MovieDetailActivity extends AppCompatActivity implements
 
     private void setTrailerData(List<Trailer> trailers) {
         TrailerRecyclerViewAdapter adapter = new TrailerRecyclerViewAdapter(this, trailers);
-        trailerRecyclerView.setAdapter(adapter);
+        activityMovieDetailBinding.rvTrailers.setAdapter(adapter);
 
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        trailerRecyclerView.setLayoutManager(layoutManager);
+        activityMovieDetailBinding.rvTrailers.setLayoutManager(layoutManager);
 
     }
 
     private void setReviewData(List<Review> reviews) {
         ReviewRecyclerViewAdapter adapter = new ReviewRecyclerViewAdapter(this, reviews);
-        reviewRecyclerView.setAdapter(adapter);
+        activityMovieDetailBinding.rvReviews.setAdapter(adapter);
 
         LinearLayoutManager layoutManager
                 = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        reviewRecyclerView.setLayoutManager(layoutManager);
+        activityMovieDetailBinding.rvReviews.setLayoutManager(layoutManager);
 
     }
 
@@ -233,19 +221,14 @@ public class MovieDetailActivity extends AppCompatActivity implements
     }
 
     private void populateUI(MoviePresentationBean movie) {
-        ImageView imageView = findViewById(R.id.image_iv);
-
         Glide.with(this)
                 .load(movie.getThumbNailImage())
                 .placeholder(R.drawable.placeholder)
                 .error(R.drawable.error)
-                .into(imageView);
-        TextView overviewTextView = findViewById(R.id.plot_synopsis);
-        TextView voteAverageTextView = findViewById(R.id.user_rating);
-        TextView releaseDateTextView = findViewById(R.id.release_date);
-        overviewTextView.setText(movie.getOverview());
-        voteAverageTextView.setText(String.valueOf(movie.getVoteAverage()).concat("/10"));
-        releaseDateTextView.setText(movie.getReleaseDate());
+                .into(activityMovieDetailBinding.imageIv);
+        activityMovieDetailBinding.plotSynopsis.setText(movie.getOverview());
+        activityMovieDetailBinding.userRating.setText(String.valueOf(movie.getVoteAverage()).concat("/10"));
+        activityMovieDetailBinding.releaseDate.setText(movie.getReleaseDate());
 
     }
 
@@ -269,7 +252,7 @@ public class MovieDetailActivity extends AppCompatActivity implements
                  * When we initially begin loading in the background, we want to display the
                  * loading indicator to the user
                  */
-                mLoadingIndicator.setVisibility(View.VISIBLE);
+                activityMovieDetailBinding.pbLoadingIndicator.setVisibility(View.VISIBLE);
 
                 // COMPLETED (8) Force a load
                 forceLoad();
@@ -310,7 +293,7 @@ public class MovieDetailActivity extends AppCompatActivity implements
 
     @Override
     public void onLoadFinished(@NonNull Loader<String> loader, String data) {
-        mLoadingIndicator.setVisibility(View.INVISIBLE);
+        activityMovieDetailBinding.pbLoadingIndicator.setVisibility(View.INVISIBLE);
 
         if (null == data) {
             Toast.makeText(this, NO_DATA_MESSAGE, Toast.LENGTH_SHORT).show();

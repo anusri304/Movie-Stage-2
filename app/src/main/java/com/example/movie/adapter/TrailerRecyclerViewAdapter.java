@@ -96,13 +96,11 @@ public class TrailerRecyclerViewAdapter extends RecyclerView.Adapter<TrailerRecy
 
     @Override
     public void onBindViewHolder(TrailerViewHolder holder, int position) {
-        Log.d("position", "#" + position);
         holder.bind(position);
     }
 
     @Override
     public int getItemCount() {
-        Log.d("Anandhi size", "#" + mValues.size());
         return mValues.size();
     }
 }

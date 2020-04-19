@@ -56,13 +56,11 @@ public class ReviewRecyclerViewAdapter extends RecyclerView.Adapter<ReviewRecycl
 
     @Override
     public void onBindViewHolder(ReviewRecyclerViewAdapter.ReviewViewHolder holder, int position) {
-        Log.d("position", "#" + position);
         holder.bind(position);
     }
 
     @Override
     public int getItemCount() {
-        Log.d("Anandhi size", "#" + mValues.size());
         return mValues.size();
     }
 }

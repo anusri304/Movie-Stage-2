@@ -61,7 +61,6 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
 
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
-        Log.d("position", "#" + position);
         Glide.with(mContext)
                 .load(mValues.get(position).getImage())
                 .placeholder(R.drawable.placeholder)

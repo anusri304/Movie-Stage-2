@@ -7,19 +7,18 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import com.example.movie.R;
+import com.example.movie.activity.bean.MoviePresentationBean;
 import com.example.movie.activity.viewmodel.MovieViewModel;
 import com.example.movie.activity.viewmodel.MovieViewModelFactory;
 import com.example.movie.adapter.MovieRecyclerViewAdapter;
-import com.example.movie.activity.bean.MoviePresentationBean;
+import com.example.movie.databinding.ActivityMainBinding;
 import com.example.movie.domain.Movie;
 import com.example.movie.utils.ApplicationConstants;
 import com.example.movie.utils.JsonUtils;
@@ -28,28 +27,26 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import static com.example.movie.utils.ApplicationConstants.*;
 
 public class MovieActivity extends AppCompatActivity implements MovieRecyclerViewAdapter.ListItemClickListener {
-    RecyclerView recyclerView;
-    CoordinatorLayout coordinatorLayout;
+
     List<MoviePresentationBean> moviePresentationBeans = new ArrayList<>();
     List<Movie> movies = new ArrayList<>();
     // Action variable to indicate whether to refresh the adapter
     static String action = "";
     MovieViewModel viewModel;
     static String tabSelected = "";
+    ActivityMainBinding activityMainBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("Test", "Testing");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        coordinatorLayout = findViewById(R.id
-                .coordinatorLayout);
-        recyclerView = findViewById(R.id.rv_movies);
+        activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         if (savedInstanceState == null) {
             if (NetworkUtils.isNetworkConnected(this)) {
                 queryPopularMoviedb();
@@ -112,7 +109,7 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
                 movieDbResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
             } catch (IOException e) {
                 if (e.getMessage() != null) {
-                    Log.d("MoviedbPopularQueryTask", e.getMessage());
+                    //Log.d("MoviedbPopularQueryTask", e.getMessage());
                 }
             }
             return movieDbResults;
@@ -150,10 +147,10 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
 
     private void setData(List<MoviePresentationBean> moviePresentationBeans) {
         MovieRecyclerViewAdapter adapter = new MovieRecyclerViewAdapter(this, moviePresentationBeans, this);
-        recyclerView.setAdapter(adapter);
+        activityMainBinding.rvMovies.setAdapter(adapter);
 
         GridLayoutManager manager = new GridLayoutManager(this, 3);
-        recyclerView.setLayoutManager(manager);
+        activityMainBinding.rvMovies.setLayoutManager(manager);
 
     }
 
@@ -221,7 +218,7 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
 
     private void showMessage(String message) {
         Snackbar snackbar = Snackbar
-                .make(coordinatorLayout, message, Snackbar.LENGTH_LONG);
+                .make(activityMainBinding.coordinatorLayout, message, Snackbar.LENGTH_LONG);
         snackbar.setTextColor(Color.RED);
         snackbar.show();
     }
@@ -230,7 +227,7 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
     public void onSaveInstanceState(Bundle savedInstanceState) {
         // Always call the superclass so it can save the view hierarchy state
 
-        Parcelable listState = Objects.requireNonNull(recyclerView.getLayoutManager()).onSaveInstanceState();
+        Parcelable listState = Objects.requireNonNull(activityMainBinding.rvMovies.getLayoutManager()).onSaveInstanceState();
         // putting recyclerview position
         savedInstanceState.putParcelable(ApplicationConstants.SAVED_RECYCLER_VIEW_STATUS_ID, listState);
         // putting recyclerview items
@@ -246,7 +243,7 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
         // Restoring adapter items
         setData(moviePresentationBeans);
         // Restoring recycler view position
-        Objects.requireNonNull(recyclerView.getLayoutManager()).onRestoreInstanceState(listState);
+        Objects.requireNonNull(activityMainBinding.rvMovies.getLayoutManager()).onRestoreInstanceState(listState);
     }
 
 }

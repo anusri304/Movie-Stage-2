@@ -62,7 +62,7 @@ public class NetworkUtils {
             url = new URL(uri.toString());
         } catch (MalformedURLException e) {
             if (e.getMessage() != null) {
-                Log.d("buildPopularUrl", "#" + e.getMessage());
+               // Log.d("buildPopularUrl", "#" + e.getMessage());
             }
         }
         return url;
