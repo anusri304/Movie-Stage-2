@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:context="com.example.movie.activity.MovieDetailActivity">
+
+    <ImageView
+            android:id="@+id/image_iv"
+            android:layout_width="200dp"
+            android:layout_height="250dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="30dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/movie_detail_content_description"/>
+
+    <TextView
+            android:id="@+id/release_date"
+            android:layout_width="wrap_content"
+            android:layout_toEndOf="@+id/image_iv"
+            android:textSize="25sp"
+            android:layout_height="wrap_content"/>
+
+
+    <TextView
+            android:id="@+id/user_rating"
+            android:layout_width="wrap_content"
+            android:layout_toEndOf="@+id/image_iv"
+            android:layout_below="@+id/release_date"
+            android:layout_height="wrap_content"/>
+
+    <ToggleButton
+            android:id="@+id/toggleButton"
+            android:layout_marginTop="15dp"
+            android:layout_width="50dp"
+            android:layout_toEndOf="@+id/image_iv"
+            android:layout_below="@+id/user_rating"
+            android:layout_height="50dp"
+            android:textOff=""
+            android:textOn=""
+            android:background="@drawable/toggle_selector"/>
+
+    <TextView
+            android:id="@+id/plot_synopsis"
+            android:layout_marginStart="25dp" android:layout_width="wrap_content"
+            android:layout_below="@+id/image_iv"
+            android:layout_height="wrap_content"/>
+
+    <View
+            android:id="@+id/darkLine"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_below="@+id/plot_synopsis"
+            android:background="@android:color/black"/>
+
+
+    <TextView
+            android:id="@+id/txtview_trailer"
+            android:layout_marginStart="25dp" android:layout_width="wrap_content"
+            android:layout_below="@+id/darkLine"
+            android:text="@string/trailers"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"/>
+
+    <ScrollView android:id="@+id/scrollViewTrailers" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_below="@+id/txtview_trailer">
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_trailers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+    </ScrollView>
+
+    <TextView
+            android:id="@+id/txtview_review"
+            android:layout_marginStart="25dp" android:layout_width="wrap_content"
+            android:layout_below="@+id/scrollViewTrailers"
+            android:text="@string/reviews"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"/>
+
+    <ScrollView android:id="@+id/scrollViewReviews" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_below="@+id/txtview_review">
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_reviews"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+    </ScrollView>
+
+    <ProgressBar
+            android:id="@+id/pb_loading_indicator"
+            android:layout_below="@+id/scrollViewReviews"
+            android:layout_height="42dp"
+            android:layout_width="42dp"
+            android:layout_gravity="center"
+            android:visibility="invisible"/>
+
+</RelativeLayout>

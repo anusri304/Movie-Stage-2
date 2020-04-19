@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Movie</string>
+    <string name="most_popular">Most Popular</string>
+    <string name="top_rated">Top Rated</string>
+    <string name="favorite">Favorite</string>
+    <string name="detail_error_message">Movie Details not available</string>
+    <string name="movie_content_description">Movie picture</string>
+    <string name="movie_detail_content_description">Movie Detail picture</string>
+    <string name="trailers">Trailers:</string>
+    <string name="reviews">Reviews:</string>
+    <string name="author">Author</string>
+    <string name="favourite_add">Mark as Favorite</string>
+    <string name="favourite_remove">Remove from Favorite</string>
+    <string name="share_url">Share URL</string>
+    <string name="sharing_youtube_trailer_url">Sharing youtube Trailer URL</string>
+
+</resources>
