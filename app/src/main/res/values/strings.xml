@@ -9,9 +9,8 @@
     <string name="trailers">Trailers:</string>
     <string name="reviews">Reviews:</string>
     <string name="author">Author</string>
-    <string name="favourite_add">Mark as Favorite</string>
-    <string name="favourite_remove">Remove from Favorite</string>
     <string name="share_url">Share URL</string>
     <string name="sharing_youtube_trailer_url">Sharing youtube Trailer URL</string>
+    <string name="play_button_desc">Play button image</string>
 
 </resources>
