@@ -44,13 +44,13 @@ public class NetworkUtils {
      * * @return The URL to use to query moviedb
      */
     public static URL buildPopularUrl() {
-        String movieDbPopularUrl = "http://api.themoviedb.org/3/movie/popular?api_key=d3b1e77590b70960f62b271cc64d7789";
+        String movieDbPopularUrl = "http://api.themoviedb.org/3/movie/popular?[API_KEY]";
         return getUrl(movieDbPopularUrl);
     }
 
     public static URL buildTrailerUrl(int movieId) {
         //TODO: define constant
-        String trailerUrl = "http://api.themoviedb.org/3/movie/"+movieId+"/videos?api_key=d3b1e77590b70960f62b271cc64d7789";
+        String trailerUrl = "http://api.themoviedb.org/3/movie/"+movieId+"/videos?[API_KEY]";
         return getUrl(trailerUrl);
     }
 
@@ -69,13 +69,13 @@ public class NetworkUtils {
 
     public static URL buildReviewUrl(int movieId) {
         //TODO: define constant
-        String reviewUrl = "http://api.themoviedb.org/3/movie/"+movieId+"/reviews?api_key=d3b1e77590b70960f62b271cc64d7789";
+        String reviewUrl = "http://api.themoviedb.org/3/movie/"+movieId+"/reviews?api_key=[API_KEY]";
         return getUrl(reviewUrl);
     }
 
 
     public static URL buildRatingUrl() {
-        String movieDbRatingUrl = "http://api.themoviedb.org/3/movie/top_rated?api_key=d3b1e77590b70960f62b271cc64d7789";
+        String movieDbRatingUrl = "http://api.themoviedb.org/3/movie/top_rated?api_key=[API_KEY]";
         return getUrl(movieDbRatingUrl);
     }
 
