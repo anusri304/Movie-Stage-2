@@ -5,14 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.AsyncTaskLoader;
@@ -91,49 +89,35 @@ public class MovieDetailActivity extends AppCompatActivity implements
                 = new ViewModelProvider(this, factory).get(MovieViewModel.class);
 
 
-        viewModel.getMovie().observe(this, new Observer<Movie>() {
-            @Override
-            public void onChanged(@Nullable Movie movie) {
-                if (movie != null) {
-                    activityMovieDetailBinding.toggleButton.setChecked(movie.isFavourite());
-                }
+        viewModel.getMovie().observe(this, movie1 -> {
+            if (movie1 != null) {
+                activityMovieDetailBinding.toggleButton.setChecked(movie1.isFavourite());
             }
         });
-        activityMovieDetailBinding.toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
-                    insertOrUpdateMovie(movie.getId(), true);
-                } else {
-                    insertOrUpdateMovie(movie.getId(), false);
-                }
+        activityMovieDetailBinding.toggleButton.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                insertOrUpdateMovie(movie.getId(), true);
+            } else {
+                insertOrUpdateMovie(movie.getId(), false);
             }
         });
     }
 
 
     private void updateMovie(int movieId, boolean isFavorite) {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                viewModel.updateMovie(movieId, isFavorite);
-            }
-        });
+        AppExecutors.getInstance().diskIO().execute(() -> viewModel.updateMovie(movieId, isFavorite));
 
     }
 
 
     private void insertOrUpdateMovie(int movieId, boolean isFavorite) {
 
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                LiveData<Movie> objMovie = viewModel.getMovie();
-                if (objMovie.getValue() == null) {
-                    saveMovie(movie);
-                } else {
-                    updateMovie(movieId, isFavorite);
-                }
+        AppExecutors.getInstance().diskIO().execute(() -> {
+            LiveData<Movie> objMovie = viewModel.getMovie();
+            if (objMovie.getValue() == null) {
+                saveMovie(movie);
+            } else {
+                updateMovie(movieId, isFavorite);
             }
         });
 
@@ -146,18 +130,15 @@ public class MovieDetailActivity extends AppCompatActivity implements
             Movie movie = new Movie();
             movie.setId(moviePresentationBean.getId());
             movie.setTitle(moviePresentationBean.getTitle());
-            AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                @Override
-                public void run() {
-                    // When movie is liked for first time it will be in favourite
-                    movie.setFavourite(true);
-                    movie.setImage(moviePresentationBean.getImage());
-                    movie.setThumbNailImage(moviePresentationBean.getThumbNailImage());
-                    movie.setOverview(moviePresentationBean.getOverview());
-                    movie.setReleaseDate(moviePresentationBean.getReleaseDate());
-                    movie.setVoteAverage(moviePresentationBean.getVoteAverage());
-                    viewModel.insertMovie(movie);
-                }
+            AppExecutors.getInstance().diskIO().execute(() -> {
+                // When movie is liked for first time it will be in favourite
+                movie.setFavourite(true);
+                movie.setImage(moviePresentationBean.getImage());
+                movie.setThumbNailImage(moviePresentationBean.getThumbNailImage());
+                movie.setOverview(moviePresentationBean.getOverview());
+                movie.setReleaseDate(moviePresentationBean.getReleaseDate());
+                movie.setVoteAverage(moviePresentationBean.getVoteAverage());
+                viewModel.insertMovie(movie);
             });
 
 

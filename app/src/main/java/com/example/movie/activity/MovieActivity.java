@@ -61,18 +61,15 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
         MovieViewModelFactory factory = new MovieViewModelFactory((Application) getApplicationContext(), 0);
         viewModel = new ViewModelProvider(this, factory).get(MovieViewModel.class);
 
-        viewModel.getAllFavoriteMovies().observe(this, new androidx.lifecycle.Observer<List<Movie>>() {
-            @Override
-            public void onChanged(List<Movie> objMovies) {
-                movies = objMovies;
-                if (tabSelected.equalsIgnoreCase(getString(R.string.favorite))) {
-                    if (!movies.isEmpty()) {
-                        setData(getMoviePresentationBeans(movies));
-                    } else {
-                        moviePresentationBeans.clear();
-                        setData(moviePresentationBeans);
-                        showMessage(NO_FAVORITE_MESSAGE);
-                    }
+        viewModel.getAllFavoriteMovies().observe(this, objMovies -> {
+            movies = objMovies;
+            if (tabSelected.equalsIgnoreCase(getString(R.string.favorite))) {
+                if (!movies.isEmpty()) {
+                    setData(getMoviePresentationBeans(movies));
+                } else {
+                    moviePresentationBeans.clear();
+                    setData(moviePresentationBeans);
+                    showMessage(NO_FAVORITE_MESSAGE);
                 }
             }
         });

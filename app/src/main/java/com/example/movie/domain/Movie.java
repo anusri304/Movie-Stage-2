@@ -1,6 +1,5 @@
 package com.example.movie.domain;
 
-import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -8,7 +7,6 @@ import androidx.room.PrimaryKey;
 public class Movie {
 
     @PrimaryKey
-    @NonNull
     public int id;
     private String image;
     private String thumbNailImage;
