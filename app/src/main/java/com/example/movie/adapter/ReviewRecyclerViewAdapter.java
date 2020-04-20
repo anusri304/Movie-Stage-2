@@ -12,6 +12,7 @@ import com.example.movie.activity.bean.Review;
 
 import java.util.List;
 
+@SuppressWarnings("ALL")
 public class ReviewRecyclerViewAdapter extends RecyclerView.Adapter<ReviewRecyclerViewAdapter.ReviewViewHolder> {
     final List<Review> mValues;
     final Context mContext;

@@ -22,6 +22,7 @@ import java.util.List;
 import static com.example.movie.utils.ApplicationConstants.NO_TRAILER_MESSAGE;
 
 
+@SuppressWarnings("ALL")
 public class TrailerRecyclerViewAdapter extends RecyclerView.Adapter<TrailerRecyclerViewAdapter.TrailerViewHolder> {
 
     final List<Trailer> mValues;

@@ -9,6 +9,7 @@ import com.example.movie.repository.MovieRepository;
 
 import java.util.List;
 
+@SuppressWarnings("ALL")
 public class MovieViewModel extends ViewModel {
     private MovieRepository movieRepository;
 

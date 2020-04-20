@@ -8,6 +8,7 @@ import com.example.movie.domain.Movie;
 
 import java.util.List;
 
+@SuppressWarnings("ALL")
 public class MovieRepository {
     private MovieDao movieDao;
 
