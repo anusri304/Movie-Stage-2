@@ -40,7 +40,7 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
     // Action variable to indicate whether to refresh the adapter
     static String action = "";
     MovieViewModel viewModel;
-    static String tabSelected = "";
+    static String menuSelected = "";
     ActivityMainBinding activityMainBinding;
 
     @Override
@@ -63,7 +63,7 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
 
         viewModel.getAllFavoriteMovies().observe(this, objMovies -> {
             movies = objMovies;
-            if (tabSelected.equalsIgnoreCase(getString(R.string.favorite))) {
+            if (menuSelected.equalsIgnoreCase(getString(R.string.favorite))) {
                 if (!movies.isEmpty()) {
                     setData(getMoviePresentationBeans(movies));
                 } else {
@@ -116,7 +116,7 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
             super.onPostExecute(s);
             // The list will be empty when popularDB endpoint is hit for the first time. We have to wait
             //for the results from both the endpoints before setting the adapter list
-            if (!moviePresentationBeans.isEmpty() || tabSelected.equalsIgnoreCase(getString(R.string.most_popular)) || tabSelected.equalsIgnoreCase(getString(R.string.top_rated))) {
+            if (!moviePresentationBeans.isEmpty() || menuSelected.equalsIgnoreCase(getString(R.string.most_popular)) || menuSelected.equalsIgnoreCase(getString(R.string.top_rated))) {
                 action = ApplicationConstants.UPDATE_ADAPTER;
             }
             if (searchUrl.toString().contains("popular")) {
@@ -179,27 +179,31 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
         int itemSelected = item.getItemId();
         if (itemSelected == R.id.action_most_popular) {
             if (NetworkUtils.isNetworkConnected(this)) {
-                tabSelected = getString(R.string.most_popular);
+                menuSelected = getString(R.string.most_popular);
                 moviePresentationBeans.clear();
                 // The adapter will be set as the action is update
                 queryPopularMoviedb();
             }
             else {
+                moviePresentationBeans.clear();
+                setData(moviePresentationBeans);
                 showMessage(NO_INTERNET_MESSAGE);
             }
 
         } else if (itemSelected == R.id.action_top_rated) {
             if (NetworkUtils.isNetworkConnected(this)) {
-                tabSelected = getString(R.string.top_rated);
+                menuSelected = getString(R.string.top_rated);
                 moviePresentationBeans.clear();
                 // The adapter will be set as the action is update
                 queryTopRatedMoviedb();
             }
             else {
+                moviePresentationBeans.clear();
+                setData(moviePresentationBeans);
                 showMessage(NO_INTERNET_MESSAGE);
             }
         } else if (itemSelected == R.id.action_favorite) {
-            tabSelected = getString(R.string.favorite);
+            menuSelected = getString(R.string.favorite);
             if (!movies.isEmpty()) {
                 setData(getMoviePresentationBeans(movies));
             } else {
