@@ -64,7 +64,6 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
         viewModel.getAllFavoriteMovies().observe(this, new androidx.lifecycle.Observer<List<Movie>>() {
             @Override
             public void onChanged(List<Movie> objMovies) {
-                System.out.println("Movies" + movies.size());
                 movies = objMovies;
                 if (tabSelected.equalsIgnoreCase(getString(R.string.favorite))) {
                     if (!movies.isEmpty()) {

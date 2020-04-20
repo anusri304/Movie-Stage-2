@@ -46,7 +46,7 @@
 
         <TextView
                 android:id="@+id/plot_synopsis"
-                android:layout_marginStart="25dp" android:layout_width="wrap_content"
+                android:layout_marginStart="@dimen/margin_start" android:layout_width="wrap_content"
                 android:layout_below="@+id/image_iv"
                 android:layout_height="wrap_content"/>
 
@@ -54,7 +54,7 @@
                 android:id="@+id/darkLine"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginStart="25dp"
+                android:layout_marginStart="@dimen/margin_start"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:layout_below="@+id/plot_synopsis"
@@ -63,7 +63,7 @@
 
         <TextView
                 android:id="@+id/txtview_trailer"
-                android:layout_marginStart="25dp" android:layout_width="wrap_content"
+                android:layout_marginStart="@dimen/margin_start" android:layout_width="wrap_content"
                 android:layout_below="@+id/darkLine"
                 android:text="@string/trailers"
                 android:textStyle="bold"
@@ -82,7 +82,7 @@
 
         <TextView
                 android:id="@+id/txtview_review"
-                android:layout_marginStart="25dp" android:layout_width="wrap_content"
+                android:layout_marginStart="@dimen/margin_start" android:layout_width="wrap_content"
                 android:layout_below="@+id/scrollViewTrailers"
                 android:text="@string/reviews"
                 android:textStyle="bold"

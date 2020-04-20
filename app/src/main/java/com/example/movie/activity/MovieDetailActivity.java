@@ -303,12 +303,10 @@ public class MovieDetailActivity extends AppCompatActivity implements
                     List<Trailer> trailers = JsonUtils.parseTrailerJson(data);
                     trailers = trailers.stream().filter(trailer -> trailer.getType().equalsIgnoreCase("Trailer")).collect(Collectors.toList());
                     setTrailerData(trailers);
-                    System.out.println("Anandhi Trailers" + trailers.size());
                     break;
                 case 23:
                     List<Review> reviews = JsonUtils.parseReviewJson(data);
                     setReviewData(reviews);
-                    System.out.println("Anandhi Reviews" + reviews.size());
                     break;
 
             }

@@ -7,22 +7,15 @@
     <TextView
             android:id="@+id/textview_author"
             android:text="@string/author"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="5dp"
-            android:textStyle="bold"
-            android:layout_marginBottom="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            style="@style/reviewStyle"
+            android:textStyle="bold"/>
+
 
     <TextView
             android:id="@+id/textview_content"
+            style="@style/reviewStyle"
             android:autoLink="web"
-            android:inputType="textMultiLine"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:inputType="textMultiLine"/>
 </LinearLayout>
 
 
