@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import com.example.movie.R;
@@ -59,7 +60,7 @@ public class MovieActivity extends AppCompatActivity implements MovieRecyclerVie
         }
 
         MovieViewModelFactory factory = new MovieViewModelFactory((Application) getApplicationContext(), 0);
-        viewModel = ViewModelProviders.of(this, factory).get(MovieViewModel.class);
+        viewModel = new ViewModelProvider(this, factory).get(MovieViewModel.class);
 
         viewModel.getAllFavoriteMovies().observe(this, new androidx.lifecycle.Observer<List<Movie>>() {
             @Override

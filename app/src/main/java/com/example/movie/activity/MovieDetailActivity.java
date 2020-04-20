@@ -4,21 +4,20 @@ import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.widget.*;
+import android.widget.CompoundButton;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.AsyncTaskLoader;
 import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.movie.R;
 import com.example.movie.activity.bean.MoviePresentationBean;
@@ -79,18 +78,17 @@ public class MovieDetailActivity extends AppCompatActivity implements
         }
         setTitle(Objects.requireNonNull(movie).getTitle());
 
-        getSupportLoaderManager().initLoader(TRAILER_SEARCH_LOADER, null, this);
-        getSupportLoaderManager().initLoader(REVIEW_SEARCH_LOADER, null, this);
+        LoaderManager.getInstance(this).initLoader(TRAILER_SEARCH_LOADER, null, this);
+        LoaderManager.getInstance(this).initLoader(REVIEW_SEARCH_LOADER, null, this);
         initButton(movie);
         populateUI(movie);
 
     }
 
     private void initButton(MoviePresentationBean movie) {
-        ;
         MovieViewModelFactory factory = new MovieViewModelFactory((Application) getApplicationContext(), movie.getId());
         viewModel
-                = ViewModelProviders.of(this, factory).get(MovieViewModel.class);
+                = new ViewModelProvider(this, factory).get(MovieViewModel.class);
 
 
         viewModel.getMovie().observe(this, new Observer<Movie>() {
@@ -190,7 +188,7 @@ public class MovieDetailActivity extends AppCompatActivity implements
 
     private void queryTrailer(MoviePresentationBean movie) {
         URL trailerUrl = NetworkUtils.buildTrailerUrl(movie.getId());
-        LoaderManager loaderManager = getSupportLoaderManager();
+        LoaderManager loaderManager = LoaderManager.getInstance(this);
         Loader<String> trailerSearchLoader = loaderManager.getLoader(TRAILER_SEARCH_LOADER);
 
         Bundle queryBundle = new Bundle();
@@ -204,14 +202,14 @@ public class MovieDetailActivity extends AppCompatActivity implements
 
     private void queryReview(MoviePresentationBean movie) {
         URL reviewUrl = NetworkUtils.buildReviewUrl(movie.getId());
-        Loader<String> reviewSearchLoader = getSupportLoaderManager().getLoader(REVIEW_SEARCH_LOADER);
+        Loader<String> reviewSearchLoader = LoaderManager.getInstance(this).getLoader(REVIEW_SEARCH_LOADER);
 
         Bundle queryBundle = new Bundle();
         queryBundle.putString(REVIEW_SEARCH_QUERY_URL_EXTRA, reviewUrl.toString());
         if (reviewSearchLoader == null) {
-            getSupportLoaderManager().initLoader(REVIEW_SEARCH_LOADER, queryBundle, this);
+            LoaderManager.getInstance(this).initLoader(REVIEW_SEARCH_LOADER, queryBundle, this);
         } else {
-            getSupportLoaderManager().restartLoader(REVIEW_SEARCH_LOADER, queryBundle, this);
+            LoaderManager.getInstance(this).restartLoader(REVIEW_SEARCH_LOADER, queryBundle, this);
         }
     }
 
@@ -281,8 +279,7 @@ public class MovieDetailActivity extends AppCompatActivity implements
                 /* Parse the URL from the passed in String and perform the search */
                 try {
                     URL url = new URL(searchQueryUrlString);
-                    String searchResults = NetworkUtils.getResponseFromHttpUrl(url);
-                    return searchResults;
+                    return NetworkUtils.getResponseFromHttpUrl(url);
                 } catch (IOException e) {
                     e.printStackTrace();
                     return null;

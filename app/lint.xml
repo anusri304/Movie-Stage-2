@@ -4,5 +4,7 @@
         <ignore path="src/main/res/drawable/error.png" />
         <ignore path="src/main/res/drawable/placeholder.png" />
         <ignore path="src/main/res/drawable/placeholder.png" />
+        <ignore path="src/main/res/drawable/star_normal.png" />
+        <ignore path="src/main/res/drawable/star_selected.png" />
     </issue>
 </lint>

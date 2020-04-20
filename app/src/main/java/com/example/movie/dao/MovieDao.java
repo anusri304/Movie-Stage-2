@@ -1,8 +1,10 @@
 package com.example.movie.dao;
 
 import androidx.lifecycle.LiveData;
-import androidx.room.*;
-import com.example.movie.activity.bean.MoviePresentationBean;
+import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.Query;
 import com.example.movie.domain.Movie;
 
 import java.util.List;
